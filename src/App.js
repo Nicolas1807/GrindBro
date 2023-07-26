@@ -1,4 +1,5 @@
 //To jest Seewy Aplikacja//
+// Zmiana ode mnie //
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { useState } from 'react';
