@@ -65,11 +65,54 @@ export default function CreatePlan(props) {
     changeSchedules(updatedSchedules)
   }
 
+  const changeOrder = (idOrder, isDown) => {
+    var updatedSchedules = []
+    var index = 0
+    for(var i = 0; i< schedules.length; i++){
+      if (schedules[i].id === idOrder)
+      {
+        index = i
+        if (isDown)
+        {
+          if(index >= schedules.length - 1)
+          {
+            return 0
+          }
+          updatedSchedules.push(schedules[i+1])
+        }
+        else
+        {
+          if(index <= 0)
+          {
+            return 0
+          }
+          updatedSchedules.push(schedules[i-1])
+        }
+      }
+      else
+      {
+        updatedSchedules.push(schedules[i])
+      }
+    }
+    if (isDown)
+    {
+      updatedSchedules[index+1] = schedules[index]
+    }
+    else
+    {
+      updatedSchedules[index-1] = schedules[index]
+    }
+    changeSchedules(updatedSchedules)
+  }
+
 
 
   //DISPLAY SCHEDULEBLOCKS
   const ScheduleBlocks = (
-    schedules.map((schedule) => (<ScheduleBlock deleteBlock = {deleteBlock} scheduleTimespan = {scheduleTimespan} addActivity = {addActivity} schedule = {schedule} key = {schedule.id} activities= {schedule.activities} start = {schedule.start} end = {schedule.end}/>))
+    schedules.map((schedule) => (<ScheduleBlock deleteBlock = {deleteBlock} 
+      scheduleTimespan = {scheduleTimespan} addActivity = {addActivity} schedule = {schedule}
+       key = {schedule.id} activities= {schedule.activities} start = {schedule.start} end = {schedule.end} 
+       changeTitle = {changeTitle} changeDesc = {changeDesc} changeOrder = {changeOrder}/>))
   )
 
 

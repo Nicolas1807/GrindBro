@@ -20,13 +20,16 @@ export default function ScheduleBlock(props) {
   const scheduleTimespan = props.scheduleTimespan
   const addActivity= props.addActivity
   const deleteBlock = props.deleteBlock
+  const changeTitle = props.changeTitle
+  const changeDesc = props.changeDesc
+  const changeOrder = props.changeOrder
 
 
-  const [timespanFocus, changeTimespanFocus] = useState(true)
+  const[timespanFocus, changeTimespanFocus] = useState(true)
   const[addActivityFocus, changeActFocus] = useState(false)
   const[newActivity, changeNewAct] = useState("")
   const[blockDone, changeBlockDone] = useState(false)
-
+  
 
   //TIMESPAN CLICK
   const timespanClick = (e) => {
@@ -36,8 +39,27 @@ export default function ScheduleBlock(props) {
   //CHANGING THE TIMESPAN
   const timespanAcceptClick = (e) => {
     e.preventDefault()
+    console.log(!isNaN(start))
+    if(isNaN(start) || isNaN(end))
+    {
+        changeTitle("Wrong Timespans")
+        changeDesc("Please enter only numbers as timespans")
+        changeStart("")
+        changeEnd("")
+    }
+    else if(start>=end || start === ""){
+        changeTitle("Wrong Timespans")
+        changeDesc("Make sure you enter hours correctly")
+        changeStart("")
+        changeEnd("")
+    }
+    else{
+    changeStart(start + ":00")
+    changeEnd(end + ":00")
     scheduleTimespan(schedule.id, start, end)
     timespanClick(e)
+    }
+    
   }
 
   //DISPLAY TIMESPAN
@@ -69,7 +91,6 @@ export default function ScheduleBlock(props) {
 
 
     const handleActClick = (e) => {
-      console.log("halo")
       changeActivities(activities.filter((act) => {
         return act !== e.target.textContent
       }))
@@ -92,10 +113,19 @@ export default function ScheduleBlock(props) {
   //HANDLE ADDICTION OF NEW ACTIVITY
   const handleActivityAdd = (e) => {
     e.preventDefault()
-    changeActivities([...activities, newActivity])
-    changeNewAct("")
-    addActivity(schedule.id, activities)
-    handleActFocus()
+    if (newActivity === "")
+    {
+      changeTitle("Typing Error")
+      changeDesc("Make sure you enter activities correctly")
+      changeNewAct("")
+    }
+    else
+    {
+      changeActivities([...activities, newActivity])
+      changeNewAct("")
+      addActivity(schedule.id, activities)
+      handleActFocus()
+    }
 
   }
   //HANDLER OF ACTIVITY VALUE CHANGE
@@ -105,7 +135,7 @@ export default function ScheduleBlock(props) {
 
   //PANEL WITH PLUS TO ADD NEW ACTIVITY
   const addAcitivityPanel = (
-    <div className = "add-act" onClick = {handleActFocus}><img src = {plus} alt = "add activity"></img></div>
+    activities.length > 3 ? "" : <div className = "add-act" onClick = {handleActFocus}><img src = {plus} alt = "add activity"></img></div>
   )
 
   //PANEL TO ADD NEW ACTIVITY
@@ -126,6 +156,15 @@ export default function ScheduleBlock(props) {
   }
 
 
+  const handleArrowDown = (e) => {
+    changeOrder(schedule.id, true)
+  }
+
+  const handleArrowUp = (e) => {
+    changeOrder(schedule.id, false)
+  }
+
+
   return (
     <div className={blockDone?" scheduleblock-green":"scheduleblock"}>
       {timespanFocus?timespanValue:timespanControl}
@@ -135,7 +174,10 @@ export default function ScheduleBlock(props) {
         
       </div>
       <div className='block-control'>  
-          <div className='arrows'><img src = {arrow} alt = "arrow"></img><img className = "arr-down" src = {arrow} alt = "arrow"></img></div>
+          <div className='arrows'>
+            <img src = {arrow} alt = "arrow" onClick = {handleArrowUp}></img>
+            <img className = "arr-down" src = {arrow} alt = "arrow" onClick = {handleArrowDown}></img>
+          </div>
           <div className="bin" onClick={blockDone?()=>{}:handleBlockDelete}><img src = {bin} alt = "bin"></img></div>
           {
           blockDone?

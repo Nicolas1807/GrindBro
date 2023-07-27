@@ -14,7 +14,7 @@ export default function Notification(props) {
     <p className='notify-content'>{errorDesc}</p>
   </div>
   )
-  setTimeout(()=>{changeVisibility(false)}, 5000)
+  
   return (
     visible?Note:""
   )
