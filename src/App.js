@@ -7,6 +7,7 @@ import "./styles/App.css"
 import Sidebar from "./Components/Sidebar.js"
 import CreatePlan from './Components/CreatePlan';
 import Notification from './Components/Notification';
+import DisplayPlan from './Components/DisplayPlan';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
 
     return  <div className='container'>
                 <Sidebar/>
+                {/* <DisplayPlan/> */}
                 <CreatePlan schedules = {schedules} changeSchedules = {changeSchedules}/>
             </div>
 

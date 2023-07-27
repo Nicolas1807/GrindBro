@@ -39,6 +39,8 @@ export default function ScheduleBlock(props) {
   //CHANGING THE TIMESPAN
   const timespanAcceptClick = (e) => {
     e.preventDefault()
+    console.log(start)
+    console.log(end)
     console.log(!isNaN(start))
     if(isNaN(start) || isNaN(end))
     {
@@ -83,7 +85,7 @@ export default function ScheduleBlock(props) {
   //DISPLAY FORM TO CHANGE TIMESPAN
   const timespanControl = (
     <form className='timespan' onSubmit={timespanAcceptClick}>
-      <input className = "timespan-inputs" type = "text" onChange={handleStartChange} value = {start}></input>
+      <input className = "timespan-inputs" type = "time" onChange={handleStartChange} value = {start}></input>
       <input className = "timespan-inputs"type = "text" onChange={handleEndChange} value = {end}></input>
       <input type = "submit" class = "accpt-timespan" value = "Accept"/>
     </form>
