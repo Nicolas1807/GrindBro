@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../styles/App.css"
 
-export default function Notification() {
+export default function Notification(props) {
+
+  const[visible, changeVisibility] = useState(true)
+  const errorTitle = props.errorTitle
+  const errorDesc = props.errorDesc
+
+
+  const Note = (
+  <div className='notification'>
+    <h1 className='notify-name'>{errorTitle}</h1>
+    <p className='notify-content'>{errorDesc}</p>
+  </div>
+  )
+  setTimeout(()=>{changeVisibility(false)}, 5000)
   return (
-    <div className='notification'>
-      <h1 className='notify-name'>Planning Error</h1>
-      <p className='notify-content'>Remember to schedule your daily tasks with appropriate timespans. You can't do two task at a time.</p>
-    </div>
+    visible?Note:""
   )
 }
