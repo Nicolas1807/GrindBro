@@ -28,7 +28,7 @@
     flex-direction:column;
 
 }
-.optionList li{
+.optionList>a{
     width:35%;
     display:flex;
     align-items: center;
@@ -38,9 +38,16 @@
     border-style:solid;
     border-color:#2C2C2C;
     border-bottom-width: 5px;
+    text-decoration: none;
+    color:white;
+}
+.optionList>a{
+
+  text-decoration: none;
+  color:white;
 }
 
-.optionList li:hover{
+.optionList a:hover{
     cursor: pointer;
     /* text-decoration: underline;
     text-decoration-color: #5FCF6A;

@@ -7,7 +7,6 @@ import { useState, useContext } from 'react'
 import Notification from './Notification'
 import Widget from "./Widget"
 import ScheduleContext from "../Context/schedules"
-
 export default function CreatePlan(props) {
 
   //Getting data from context

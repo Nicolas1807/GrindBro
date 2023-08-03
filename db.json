@@ -1,6 +1,6 @@
 {
     "schedules":[
-        {"id":1, "start":"7:00", "end":"9:00", "activities":["jogging", "swimming"]}, 
-        {"id":2, "start":"9:00", "end":"10:00", "activities":["breakfast", "shower", "watch TV"]}
+        {"id":3, "start":"7:00", "end":"9:00", "activities":["jogging", "swimming"]}, 
+        {"id":7, "start":"9:00", "end":"10:00", "activities":["breakfast", "shower", "watch TV"]}
     ]
 }

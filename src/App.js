@@ -6,16 +6,17 @@ import Sidebar from "./Components/Sidebar.js"
 import CreatePlan from './Components/CreatePlan';
 import DisplayPlan from './Components/DisplayPlan';
 import {Provider} from "./Context/schedules"
+import {Switch,Routes,Route,Link} from "react-router-dom";
+
 import axios from "axios"
 function App() {
 
-    const[schedules, changeSchedules] = useState([{id:1, start:"7:00", end:"9:00", activities:["jogging", "swimming"]}, {id:2, start:"9:00", end:"10:00", activities:["breakfast","dupa"]}])
+    const[schedules, changeSchedules] = useState([, ]);
    
     useEffect(()=>{
         const getData = async() => {
             await axios.get("http://localhost:3001/schedules", {}).then((response)=>{
                 changeSchedules([...response.data])
-                console.log(schedules)
             })
         }
         getData()
@@ -25,8 +26,10 @@ function App() {
     return  <div className='container'>
                 <Provider schedules = {schedules} changeSchedules = {changeSchedules}>
                     <Sidebar/>
-                    {/* <DisplayPlan/> */}
-                    <CreatePlan schedules = {schedules} changeSchedules = {changeSchedules}/>
+                    <Routes>
+                    <Route path = "/display-plan" element = {<DisplayPlan/>}/>
+                    <Route path = "/create-plan" element = {<CreatePlan schedules = {schedules} changeSchedules = {changeSchedules}/>}/>
+                    </Routes>
                 </Provider>
             </div>
 
