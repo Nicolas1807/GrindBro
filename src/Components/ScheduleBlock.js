@@ -130,12 +130,13 @@ export default function ScheduleBlock(props) {
     }
     else
     {
-      console.log(newActivity)
-      console.log([...localActivities, newActivity])
-      changeLocalActivities([...localActivities, newActivity])
+
+      changeLocalActivities([...localActivities, "edaedssdfsdfsdf"])
+      console.log([...localActivities, "edaedssdfsdfsdf"])
       console.log(localActivities)
       changeNewAct("")
       changeActivities(schedule.id, localActivities)
+
       handleActFocus()
     }
 

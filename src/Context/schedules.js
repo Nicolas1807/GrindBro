@@ -1,16 +1,22 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import React from 'react';
+import axios from "axios";
+
 
 const SchedulesContext = createContext();
 
-function Provider({children}) {
+function Provider(props) {
     // GLOBAL STATES
-    const[schedules, changeSchedules] = useState([{id:1, start:"7:00", end:"9:00", activities:["jogging", "swimming"]}, {id:2, start:"9:00", end:"10:00", activities:["breakfast",]}])
+    const schedules = props.schedules
+    const changeSchedules = props.changeSchedules
+    const children = props.children
     // const [errorTitle, changeTitle] = useState("Daily Reminder")
+ 
     // const [errorDesc, changeDesc] = useState("Remember to schedule your daily tasks with appropriate timespans. You can't do two task at a time.")
     // const [notifyVisible, changeNotifyVisible] = useState(true)
     // const [showWidget, changeShowWidget] = useState(false)
     
+  
 
     //ADDING SCHEDULE BLOCK FUNCTION
     const onAddSchedule = () => {

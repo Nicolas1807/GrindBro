@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "../styles/App.css"
 import "../styles/CreatePlan.css"
 import ScheduleBlock from './ScheduleBlock'
@@ -11,7 +11,9 @@ import ScheduleContext from "../Context/schedules"
 export default function CreatePlan(props) {
 
   //Getting data from context
-  const {onAddSchedule, schedules} = useContext(ScheduleContext)
+  const {onAddSchedule} = useContext(ScheduleContext)
+
+  const schedules = props.schedules
 
 
   //Modifying Activity with Widget
