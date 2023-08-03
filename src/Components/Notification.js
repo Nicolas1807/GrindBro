@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import "../styles/App.css"
 
 export default function Notification(props) {
 
-  const[visible, changeVisibility] = useState(true)
+  const visible = props.visible
   const errorTitle = props.errorTitle
   const errorDesc = props.errorDesc
 
+  useEffect(() => {
+    console.log("Error Occured")
+  }, [visible])
 
   const Note = (
   <div className='notification'>

@@ -3,26 +3,31 @@ import "../styles/App.css"
 import "../styles/CreatePlan.css"
 import tool from "../svg/dashicons_admin-tools.svg"
 import plus from "../svg/typcn_plus.svg"
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import yes from "../svg/dashicons_yes.svg"
 import bin from "../svg/mdi_bin.svg"
 import arrow from "../svg/arrow.svg"
 import tools from "../svg/mdi_tool.svg"
+import ScheduleContext from "../Context/schedules"
 
 
 export default function ScheduleBlock(props) {
 
+  const{deleteBlock, changeOrder, scheduleTimespan, changeActivities} = useContext(ScheduleContext)
+
+
   const [start, changeStart] = useState(props.start)
   const [end, changeEnd] = useState(props.end)
-  const [activities, changeActivities] = useState(props.activities)
+  const [localActivities, changeLocalActivities] = useState(props.activities)
 
   const schedule = props.schedule
-  const scheduleTimespan = props.scheduleTimespan
-  const addActivity= props.addActivity
-  const deleteBlock = props.deleteBlock
-  const changeTitle = props.changeTitle
-  const changeDesc = props.changeDesc
-  const changeOrder = props.changeOrder
+
+
+  // const scheduleTimespan = props.scheduleTimespan
+  // const addActivity= props.addActivity
+  // const deleteBlock = props.deleteBlock
+  // const changeOrder = props.changeOrder
+
 
 
   const[timespanFocus, changeTimespanFocus] = useState(true)
@@ -39,23 +44,27 @@ export default function ScheduleBlock(props) {
   //CHANGING THE TIMESPAN
   const timespanAcceptClick = (e) => {
     e.preventDefault()
-    console.log(!isNaN(start))
-    if(isNaN(start) || isNaN(end))
+    
+    let [startHour, startMinute] = start.split(":")
+    let [endHour, endMinute] = end.split(":")
+    console.log(startHour)
+    console.log(startMinute)
+    if(isNaN(startHour) || isNaN(startMinute) || isNaN(endHour) || isNaN(endMinute))
     {
-        changeTitle("Wrong Timespans")
-        changeDesc("Please enter only numbers as timespans")
-        changeStart("")
-        changeEnd("")
+      // changeTitle("Enter Correct Timespans")
+      // changeDesc("Remeber to not leave empty inputs")
+      changeStart("")
+      changeEnd("")
     }
-    else if(start>=end || start === ""){
-        changeTitle("Wrong Timespans")
-        changeDesc("Make sure you enter hours correctly")
+    else if(startHour>endHour || (startHour===endHour && startMinute >= endMinute)){
+        // changeTitle("Missing Logic")
+        // changeDesc("Make sure you enter hours correctly")
         changeStart("")
         changeEnd("")
     }
     else{
-    changeStart(start + ":00")
-    changeEnd(end + ":00")
+    changeStart(startHour + ":" + startMinute)
+    changeEnd(endHour + ":" + endMinute)
     scheduleTimespan(schedule.id, start, end)
     timespanClick(e)
     }
@@ -83,25 +92,25 @@ export default function ScheduleBlock(props) {
   //DISPLAY FORM TO CHANGE TIMESPAN
   const timespanControl = (
     <form className='timespan' onSubmit={timespanAcceptClick}>
-      <input className = "timespan-inputs" type = "text" onChange={handleStartChange} value = {start}></input>
-      <input className = "timespan-inputs"type = "text" onChange={handleEndChange} value = {end}></input>
+      <input className = "timespan-inputs" type = "time" onChange={handleStartChange} value = {start}></input>
+      <input className = "timespan-inputs"type = "time" onChange={handleEndChange} value = {end}></input>
       <input type = "submit" class = "accpt-timespan" value = "Accept"/>
     </form>
   )
 
 
     const handleActClick = (e) => {
-      changeActivities(activities.filter((act) => {
+      changeLocalActivities(localActivities.filter((act) => {
         return act !== e.target.textContent
       }))
-      addActivity(schedule.id, activities)
+      changeActivities(schedule.id, localActivities)
     }
 
 
   //DISPLAY ACTIVITIES
   const Activities = (
-   activities.map((activity) => {
-    return <div className='activity-block' onClick={blockDone?()=>{}:handleActClick}>{activity}</div>
+   localActivities.map((activity) => {
+    return <div key = {activity} className='activity-block' onClick={blockDone?()=>{}:handleActClick}>{activity}</div>
    })
   )
   
@@ -115,15 +124,18 @@ export default function ScheduleBlock(props) {
     e.preventDefault()
     if (newActivity === "")
     {
-      changeTitle("Typing Error")
-      changeDesc("Make sure you enter activities correctly")
+      // changeTitle("Typing Error")
+      // changeDesc("Make sure you enter activities correctly")
       changeNewAct("")
     }
     else
     {
-      changeActivities([...activities, newActivity])
+      console.log(newActivity)
+      console.log([...localActivities, newActivity])
+      changeLocalActivities([...localActivities, newActivity])
+      console.log(localActivities)
       changeNewAct("")
-      addActivity(schedule.id, activities)
+      changeActivities(schedule.id, localActivities)
       handleActFocus()
     }
 
@@ -135,7 +147,7 @@ export default function ScheduleBlock(props) {
 
   //PANEL WITH PLUS TO ADD NEW ACTIVITY
   const addAcitivityPanel = (
-    activities.length > 3 ? "" : <div className = "add-act" onClick = {handleActFocus}><img src = {plus} alt = "add activity"></img></div>
+    localActivities.length > 3 ? "" : <div className = "add-act" onClick = {handleActFocus}><img src = {plus} alt = "add activity"></img></div>
   )
 
   //PANEL TO ADD NEW ACTIVITY
