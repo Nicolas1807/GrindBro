@@ -11,24 +11,12 @@ import {Switch,Routes,Route,Link} from "react-router-dom";
 import axios from "axios"
 function App() {
 
-    const[schedules, changeSchedules] = useState([, ]);
-   
-    useEffect(()=>{
-        const getData = async() => {
-            await axios.get("http://localhost:3001/schedules", {}).then((response)=>{
-                changeSchedules([...response.data])
-            })
-        }
-        getData()
-    }, [])
-        
-    
     return  <div className='container'>
-                <Provider schedules = {schedules} changeSchedules = {changeSchedules}>
+                <Provider>
                     <Sidebar/>
                     <Routes>
-                    <Route path = "/display-plan" element = {<DisplayPlan/>}/>
-                    <Route path = "/create-plan" element = {<CreatePlan schedules = {schedules} changeSchedules = {changeSchedules}/>}/>
+                    <Route exact path = "/display-plan" element = {<DisplayPlan/>}/>
+                    <Route exact path = "/create-plan/:url" element = {<CreatePlan/>}/>
                     </Routes>
                 </Provider>
             </div>

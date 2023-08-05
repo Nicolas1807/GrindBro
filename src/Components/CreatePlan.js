@@ -1,24 +1,31 @@
-import React, { useEffect } from 'react'
 import "../styles/App.css"
 import "../styles/CreatePlan.css"
 import ScheduleBlock from './ScheduleBlock'
 import svgplus from "../svg/typcn_plus.svg"
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect} from 'react'
 import Notification from './Notification'
 import Widget from "./Widget"
 import ScheduleContext from "../Context/schedules"
+import { useParams } from "react-router-dom"
+
+
 export default function CreatePlan(props) {
 
   //Getting data from context
-  const {onAddSchedule} = useContext(ScheduleContext)
-
-  const schedules = props.schedules
+  const {onAddSchedule, fetchSchedulesByDate, schedules, changeCurrentDate} = useContext(ScheduleContext)
 
 
-  //Modifying Activity with Widget
-  // const activityModify = (idSchedule, activity) => {
+  const {url} = useParams()
+  const [date, changeDate] = useState(new Date())
+  
 
-  // }
+
+  useEffect(()=> {
+    const dateUrls = url.split('-')
+    changeDate(new Date(dateUrls[0], dateUrls[1]-1, dateUrls[2]))
+    fetchSchedulesByDate(url)
+  }, [])
+
 
   //DISPLAY SCHEDULEBLOCKS
   const ScheduleBlocks = (
@@ -35,7 +42,7 @@ export default function CreatePlan(props) {
   return (
     <div className='content'>
         <div className='panel'>
-            <div className='title'>Plan your day</div>
+            <div className='title'>Plan {date.getDate()} {date.toLocaleString('en-US', { month: 'long', lang: "eng" })} {date.getFullYear()}</div>
             <div className='schedule'>
               {ScheduleBlocks}
             </div>

@@ -6,9 +6,28 @@ import axios from "axios";
 const SchedulesContext = createContext();
 
 function Provider(props) {
+
+
+  const[schedules, changeSchedules] = useState([, ]);
+  const[currentDate, changeCurrentDate] = useState(new Date())
+
+  useEffect(()=>{
+      const getData = async() => {
+          await axios.get("http://localhost:3001/days", {}).then((response)=>{
+              console.log(response)
+              // changeSchedules([...response.data])
+          })
+      }
+      try{
+        getData()
+      }
+      catch(e)
+      {
+        console.log("siema")
+      }
+  }, [])
     // GLOBAL STATES
-    const schedules = props.schedules
-    const changeSchedules = props.changeSchedules
+
     const children = props.children
     // const [errorTitle, changeTitle] = useState("Daily Reminder")
  
@@ -17,6 +36,36 @@ function Provider(props) {
     // const [showWidget, changeShowWidget] = useState(false)
     
   
+    const fetchSchedulesByDate = (dateUrl) => {
+      const getData = async() => {
+        await axios.get("http://localhost:3001/days/"+dateUrl, {}).then((response)=>{
+            changeSchedules(response.data.schedules)
+        })
+    }
+    try{
+      getData()
+    }
+    catch(e){
+      console.log("siema")
+    }
+    }
+
+    // const updateDateSchedules = () => {
+    //   const getData = async() => {
+    //     await axios.post("http://localhost:3001/days", {}).then((response)=>{
+    //         changeSchedules(response.data.schedules)
+    //     })
+    //   }
+    //   try{
+    //     getData()
+    //   }
+    //   catch(e){
+    //     console.log("siema")
+    //   }
+    // }
+
+
+
 
     //ADDING SCHEDULE BLOCK FUNCTION
     const onAddSchedule = () => {
@@ -33,6 +82,8 @@ function Provider(props) {
         
         }
         changeSchedules([...schedules, {id:newId, start:"10:00", end:"12:00", activities:[]}])
+
+
     }
 
 
@@ -113,7 +164,9 @@ function Provider(props) {
     scheduleTimespan,
     changeActivities,
     deleteBlock,
-    changeOrder
+    changeOrder,
+    fetchSchedulesByDate,
+    changeCurrentDate
   }
 
   return (
